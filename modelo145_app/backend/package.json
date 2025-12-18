@@ -1,6 +1,6 @@
 {
   "name": "modelo145-backend",
-  "version": "1.0.0",
+  "version": "1.0.0",ii
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
@@ -13,3 +13,4 @@
     "cors": "^2.8.5"
   }
 }
+
