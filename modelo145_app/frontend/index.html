@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modelo 145 App</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="container">
+
+<select id="lang" class="select-lang">
+<option value="es">🇪🇸 Español</option>
+<option value="en">🇬🇧 English</option>
+<option value="fr">🇫🇷 Français</option>
+<option value="ar">🇲🇦 العربية</option>
+<option value="ru">🇷🇺 Русский</option>
+<option value="pl">🇵🇱 Polski</option>
+<option value="ro">🇷🇴 Română</option>
+<option value="uk">🇺🇦 Українська</option>
+</select>
+
+<div id="screen1" class="screen active">
+<h2>Modelo 145</h2>
+<p>Comunicación de datos al pagador</p>
+<button id="start">Empezar</button>
+</div>
+
+<div id="screen2" class="screen">
+<h3>Datos personales</h3>
+<label>NIF<input id="nif" type="text"></label>
+<label>Apellidos y nombre<input id="nombre" type="text"></label>
+<label>Año de nacimiento<input id="anio" type="number"></label>
+<button class="secondary" onclick="go(1)">Atrás</button>
+<button onclick="go(3)">Siguiente</button>
+</div>
+
+<div id="screen3" class="screen">
+<h3>Situación familiar</h3>
+<label><input type="radio" name="sf" value="01"> Soltero / viudo / divorciado</label>
+<label><input type="radio" name="sf" value="02"> Casado (cónyuge sin rentas)</label>
+<label><input type="radio" name="sf" value="03"> Otros</label>
+<button class="secondary" onclick="go(2)">Atrás</button>
+<button onclick="go(4)">Siguiente</button>
+</div>
+
+<div id="screen4" class="screen">
+<h3>Hijos y descendientes</h3>
+<label><input type="checkbox" id="hijos"> Existen hijos/descendientes</label>
+<label>Número<input id="numHijos" type="number"></label>
+<label><input type="checkbox" id="hijosDis33"> Alguno con discapacidad ≥33%</label>
+<label><input type="checkbox" id="hijosDis65"> Alguno con discapacidad ≥65%</label>
+<button class="secondary" onclick="go(3)">Atrás</button>
+<button onclick="go(5)">Siguiente</button>
+</div>
+
+<div id="screen5" class="screen">
+<h3>Ascendientes</h3>
+<label><input type="checkbox" id="asc65"> Convive con ascendientes ≥65 años</label>
+<label><input type="checkbox" id="ascDis33"> Ascendiente con discapacidad ≥33%</label>
+<button class="secondary" onclick="go(4)">Atrás</button>
+<button onclick="go(6)">Siguiente</button>
+</div>
+
+<div id="screen6" class="screen">
+<h3>Discapacidad del perceptor</h3>
+<label><input type="checkbox" id="percDis33"> ≥33%</label>
+<label><input type="checkbox" id="percDis65"> ≥65%</label>
+<button class="secondary" onclick="go(5)">Atrás</button>
+<button onclick="go(7)">Siguiente</button>
+</div>
+
+<div id="screen7" class="screen">
+<h3>Firma</h3>
+<p>Firme con el dedo</p>
+<canvas id="sign"></canvas>
+<button class="secondary" onclick="clearSign()">Borrar firma</button>
+<button id="genPDF">Generar PDF</button>
+<p class="note">El PDF se abrirá para guardar o compartir</p>
+</div>
+
+</div>
+<script src="script.js"></script>
+</body>
+</html>
