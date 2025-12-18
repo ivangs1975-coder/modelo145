@@ -1,8 +1,8 @@
-const path = require("path");
 const express = require("express");
 const { PDFDocument } = require("pdf-lib");
 const multer = require("multer");
 const fs = require("fs");
+const path = require("path");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
@@ -13,30 +13,27 @@ app.use(cors());
 app.use(bodyParser.json({ limit: "5mb" }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Servir archivos estáticos del frontend
+// Servir frontend
 app.use(express.static(path.join(__dirname, "../frontend")));
-
-// Ruta raíz para abrir el formulario
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/index.html"));
 });
 
-// Ruta POST para generar PDF
+// PDF editable
 const pdfPath = path.join(__dirname, "MODELO_145.pdf");
 
 app.post("/generate-pdf", upload.none(), async (req, res) => {
   try {
     const existingPdfBytes = fs.readFileSync(pdfPath);
     const pdfDoc = await PDFDocument.load(existingPdfBytes);
-
     const form = pdfDoc.getForm();
 
-    // Ejemplo: asignar datos del frontend
+    // Mapear todos los campos del 145
     form.getTextField("nombre").setText(req.body.nombre || "");
     form.getTextField("nif").setText(req.body.nif || "");
     form.getTextField("anyoNacimiento").setText(req.body.anyoNacimiento || "");
-    
-    // Aquí añadirás todas las preguntas del 145
+
+    // Aquí añadirás todos los demás campos del 145
     // form.getTextField("preguntaX").setText(req.body.preguntaX || "");
 
     // Firma
