@@ -1,44 +1,58 @@
-const express = require('express');
-const multer = require('multer');
-const { PDFDocument } = require('pdf-lib');
+const express = require("express");
+const { PDFDocument } = require("pdf-lib");
+const multer = require("multer");
+const fs = require("fs");
+const path = require("path");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+
 const app = express();
 const upload = multer();
-const fs = require('fs');
-const path = require('path');
+app.use(cors());
+app.use(bodyParser.json({ limit: "5mb" }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(express.static('../frontend'));
+// Ruta del PDF editable
+const pdfPath = path.join(__dirname, "MODELO_145.pdf");
 
-app.post('/generate-pdf', upload.none(), async (req, res) => {
-  const pdfPath = path.join(__dirname, '../MODELO_145.pdf');
-  const pdfBytes = fs.readFileSync(pdfPath);
-  const pdfDoc = await PDFDocument.load(pdfBytes);
-  const form = pdfDoc.getForm();
+app.post("/generate-pdf", upload.none(), async (req, res) => {
+  try {
+    const existingPdfBytes = fs.readFileSync(pdfPath);
+    const pdfDoc = await PDFDocument.load(existingPdfBytes);
 
-  // Mapeo de campos
-  form.getTextField('NIF').setText(req.body.nif || '');
-  form.getTextField('Apellidos y Nombre').setText(req.body.nombre || '');
-  form.getTextField('Año de nacimiento').setText(req.body.anio || '');
-  if(req.body.sf) form.getCheckBox(req.body.sf).check();
-  if(req.body.hijos==='true') form.getCheckBox('04').check();
-  if(req.body.hijosDis33==='true') form.getCheckBox('05').check();
-  if(req.body.hijosDis65==='true') form.getCheckBox('06').check();
-  if(req.body.asc65==='true') form.getCheckBox('07').check();
-  if(req.body.ascDis33==='true') form.getCheckBox('08').check();
-  if(req.body.percDis33==='true') form.getCheckBox('09').check();
-  if(req.body.percDis65==='true') form.getCheckBox('10').check();
+    const form = pdfDoc.getForm();
 
-  // Firma
-  const pngImageBytes = Buffer.from(req.body.firma.split(',')[1], 'base64');
-  const pngImage = await pdfDoc.embedPng(pngImageBytes);
-  const page = pdfDoc.getPages()[0];
-  page.drawImage(pngImage, { x:320, y:90, width:180, height:60 });
+    // Ejemplo: asignar datos del frontend
+    form.getTextField("nombre").setText(req.body.nombre || "");
+    form.getTextField("nif").setText(req.body.nif || "");
+    form.getTextField("anyoNacimiento").setText(req.body.anyoNacimiento || "");
+    
+    // Aquí añadirás todas las preguntas del 145
+    // form.getTextField("preguntaX").setText(req.body.preguntaX || "");
 
-  const pdfData = await pdfDoc.save();
-  res.setHeader('Content-Type', 'application/pdf');
-  res.send(pdfData);
+    // Firma
+    if (req.body.firma) {
+      const [header, data] = req.body.firma.split(",");
+      const signatureImage = await pdfDoc.embedPng(data);
+      const pages = pdfDoc.getPages();
+      const firstPage = pages[0];
+      firstPage.drawImage(signatureImage, {
+        x: 400,
+        y: 100,
+        width: 150,
+        height: 50
+      });
+    }
+
+    const pdfBytes = await pdfDoc.save();
+    res.setHeader("Content-Disposition", "attachment; filename=MODELO_145_RELLENO.pdf");
+    res.setHeader("Content-Type", "application/pdf");
+    res.send(pdfBytes);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error generando PDF");
+  }
 });
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
-
-
