@@ -1,5 +1,5 @@
 body {
-  font-family: Arial, sans-serif;
+  font-family: Arial,7 sans-serif;
   margin: 20px;
 }
 
@@ -19,3 +19,4 @@ canvas {
   display: block;
   margin-bottom: 10px;
 }
+
