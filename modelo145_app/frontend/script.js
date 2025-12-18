@@ -1,5 +1,5 @@
 const form = document.getElementById("modelo145Form");
-const canvas = documuent.getElementById("firmaCanvas");
+const canvas = document.getElementById("firmaCanvas");
 const ctx = canvas.getContext("2d");
 let drawing = false;
 
@@ -53,4 +53,3 @@ form.addEventListener("submit", async (e) => {
     alert("Error generando PDF");
   }
 });
-
