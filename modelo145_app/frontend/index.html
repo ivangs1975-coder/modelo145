@@ -5,21 +5,36 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Modelo 145</title>
 <link rel="stylesheet" href="styles.css">
+<script src="i18n.js"></script>
 </head>
 <body>
 <div id="form-container">
   <h1>Modelo 145</h1>
+  <select id="languageSelector">
+    <option value="es">Español</option>
+    <option value="en">English</option>
+    <option value="ru">Русский</option>
+    <option value="pl">Polski</option>
+    <option value="ro">Română</option>
+    <option value="ua">Українська</option>
+  </select>
   <form id="modelo145Form">
-    <label>Nombre:</label>
+    <label for="nombre">Nombre:</label>
     <input type="text" name="nombre" required>
 
-    <label>NIF:</label>
+    <label for="nif">NIF:</label>
     <input type="text" name="nif" required>
 
-    <label>Año nacimiento:</label>
+    <label for="anyoNacimiento">Año nacimiento:</label>
     <input type="number" name="anyoNacimiento" required>
 
-    <!-- Añadir aquí todas las demás preguntas -->
+    <!-- Checkboxes -->
+    <label><input type="checkbox" name="minusvalia"> Minusvalía</label>
+    <label><input type="checkbox" name="ascendencia"> Ascendencia</label>
+    <label><input type="checkbox" name="discapacidad"> Discapacidad</label>
+    <label><input type="checkbox" name="familiaNumerosa"> Familia numerosa</label>
+    <label><input type="checkbox" name="situacionEspecial"> Situación especial</label>
+    <label><input type="checkbox" name="otraSituacion"> Otra situación</label>
 
     <label>Firma:</label>
     <canvas id="firmaCanvas" width="300" height="100" style="border:1px solid #000;"></canvas>
@@ -29,6 +44,7 @@
   </form>
 </div>
 
+<script src="i18n.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
