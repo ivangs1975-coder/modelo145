@@ -28,13 +28,18 @@ app.post("/generate-pdf", upload.none(), async (req, res) => {
     const pdfDoc = await PDFDocument.load(existingPdfBytes);
     const form = pdfDoc.getForm();
 
-    // Mapear todos los campos del 145
+    // Text fields
     form.getTextField("nombre").setText(req.body.nombre || "");
     form.getTextField("nif").setText(req.body.nif || "");
     form.getTextField("anyoNacimiento").setText(req.body.anyoNacimiento || "");
 
-    // Aquí añadirás todos los demás campos del 145
-    // form.getTextField("preguntaX").setText(req.body.preguntaX || "");
+    // Checkbox fields
+    if (req.body.minusvalia === "true") form.getCheckBox("minusvalía").check(); else form.getCheckBox("minusvalía").uncheck();
+    if (req.body.ascendencia === "true") form.getCheckBox("ascendencia").check(); else form.getCheckBox("ascendencia").uncheck();
+    if (req.body.discapacidad === "true") form.getCheckBox("discapacidad").check(); else form.getCheckBox("discapacidad").uncheck();
+    if (req.body.familiaNumerosa === "true") form.getCheckBox("familiaNumerosa").check(); else form.getCheckBox("familiaNumerosa").uncheck();
+    if (req.body.situacionEspecial === "true") form.getCheckBox("situaciónEspecial").check(); else form.getCheckBox("situaciónEspecial").uncheck();
+    if (req.body.otraSituacion === "true") form.getCheckBox("otraSituacion").check(); else form.getCheckBox("otraSituacion").uncheck();
 
     // Firma
     if (req.body.firma) {
